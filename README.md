@@ -9,8 +9,8 @@
 ## Используемые ресурсы
 * React
 * React Router
-* React Toolkit
 * Redux
+* Redux Toolkit
 * Redux Thunk
 * Redux LocalStorage Simple
 
