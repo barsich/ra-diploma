@@ -6,7 +6,6 @@ const initialState = {
   active: 0, // 0 for 'all'
 };
 
-// TODO add error, loading
 const categoriesList = createSlice({
   name: 'itemList',
   initialState,

@@ -12,7 +12,7 @@ export default function HomePage(props) {
       <Container>
         <Banner />
         <HotGoods />
-        <Goods page={props.match.path} query={''} />
+        <Goods page={props.match.path} />
       </Container>
       <Footer />
     </>

@@ -6,15 +6,22 @@ const initialState = {
   status: 'idle',
 };
 
-// TODO add error, loading
 const topItemList = createSlice({
   name: 'topItemList',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchTopItems.fulfilled, (state, action) => {
-      Array.isArray(action.payload) ? state.items = action.payload : state.items = [];
-    });
+    builder
+      .addCase(fetchTopItems.fulfilled, (state, action) => {
+        Array.isArray(action.payload) ? (state.items = action.payload) : (state.items = []);
+        state.status = 'succeeded';
+      })
+      .addCase(fetchTopItems.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchTopItems.rejected, (state) => {
+        state.status = 'failed';
+      });
   },
 });
 

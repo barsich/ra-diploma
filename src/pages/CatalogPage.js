@@ -10,7 +10,7 @@ export default function CatalogPage(props) {
       <Header />
       <Container>
         <Banner />
-        <Goods query={props.location.state ? props.location.state.query : null} />
+        <Goods query={props.location.search} page={props.match.path} />
       </Container>
       <Footer />
     </>

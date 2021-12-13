@@ -4,18 +4,22 @@ import { fetchItems, fetchMoreItems, fetchSelectedItem } from '../actions/action
 const initialState = {
   items: [],
   lastFetchedItems: [],
-  selectedItem: null,
+  selectedItem: {},
   storedSearchValue: '',
-  status: 'idle',
+  statusFetch: 'idle',
+  statusFetchMore: 'idle',
+  statusFetchItem: 'idle',
 };
 
-// TODO add error, loading
 const itemList = createSlice({
   name: 'itemList',
   initialState,
   reducers: {
     changeSearchValue: (state, action) => {
       state.storedSearchValue = action.payload;
+    },
+    clearSelectedItem: (state) => {
+      state.selectedItem = {};
     },
   },
   extraReducers: (builder) => {
@@ -27,6 +31,13 @@ const itemList = createSlice({
         } else {
           state.items = [];
         }
+        state.statusFetch = 'succeeded';
+      })
+      .addCase(fetchItems.pending, (state) => {
+        state.statusFetch = 'loading';
+      })
+      .addCase(fetchItems.rejected, (state) => {
+        state.statusFetch = 'failed';
       })
       .addCase(fetchMoreItems.fulfilled, (state, action) => {
         if (Array.isArray(action.payload)) {
@@ -35,12 +46,26 @@ const itemList = createSlice({
         } else {
           state.lastFetchedItems = [];
         }
+        state.statusFetchMore = 'succeeded';
+      })
+      .addCase(fetchMoreItems.pending, (state) => {
+        state.statusFetchMore = 'loading';
+      })
+      .addCase(fetchMoreItems.rejected, (state) => {
+        state.statusFetchMore = 'failed';
       })
       .addCase(fetchSelectedItem.fulfilled, (state, action) => {
         state.selectedItem = action.payload;
+        state.statusFetchItem = 'succeeded';
+      })
+      .addCase(fetchSelectedItem.pending, (state) => {
+        state.statusFetchItem = 'loading';
+      })
+      .addCase(fetchSelectedItem.rejected, (state) => {
+        state.statusFetchItem = 'failed';
       });
   },
 });
 
-export const { changeSearchValue } = itemList.actions;
+export const { changeSearchValue, clearSelectedItem } = itemList.actions;
 export default itemList;

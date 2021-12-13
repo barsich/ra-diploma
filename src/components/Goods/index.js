@@ -1,46 +1,63 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { fetchItems, fetchMoreItems } from '../../actions/actionCreators';
 import { changeCategory } from '../../reducers/categoriesSlice';
 import { changeSearchValue } from '../../reducers/itemListSlice';
+import { pickCategory, pickSearch } from '../../utils';
 import CategoriesSelector from '../CategoriesSelector';
+import Error from '../Error';
+import Loading from '../Loading';
 import GoodsItem from './GoodsItem.js';
 
-// FIXME на запрос "белый" не загружается 7й товар
-// FIXME после поиска в хедере первая смена категории некорректна
 export default function Goods({ query, page }) {
-  const { items, lastFetchedItems, status, storedSearchValue } = useSelector(
+  const { items, lastFetchedItems, statusFetch, statusFetchMore, storedSearchValue } = useSelector(
     (state) => state.itemListReducer
   );
   const { active } = useSelector((state) => state.categoriesListReducer);
   const dispatch = useDispatch();
+  const history = useHistory();
   const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
-    if (storedSearchValue) {
+    const decodedQuery = pickSearch(query);
+    const category = pickCategory(query);
+    if (decodedQuery) {
+      setSearchValue(decodedQuery);
+      dispatch(changeSearchValue(decodedQuery));
+    } else {
       setSearchValue(storedSearchValue);
-    } else if (query) {
-      setSearchValue(query);
     }
-  }, [storedSearchValue, query]);
-
-  // если поиск был из строки в хедере:
-  useEffect(() => {
-    dispatch(fetchItems({ id: 0, query }));
-  }, [dispatch, query]);
-
-  // FIXME очистка сохраненного поиска при размонтировании
-  useEffect(() => {
-    if (!query) {
-      return () => dispatch(changeSearchValue(''));
+    if (category) {
+      dispatch(changeCategory(category));
     }
-  }, []);
+  }, [dispatch, storedSearchValue, query]);
 
+ /**
+  * отображение URI с категорией товара и с поисковым запросом, если таковой имеется
+  * и отправка запроса с этими данными
+  */
   useEffect(() => {
-    return () => dispatch(changeCategory(0));
-  }, []);
+    console.log(storedSearchValue, active);
+    let url = page;
+    if (storedSearchValue) {
+      url = url.concat(`/?q=${storedSearchValue}&categoryId=${active}`);
+    }
+    history.replace(url);
+    console.log('test');
+    dispatch(fetchItems({ id: active, query: storedSearchValue }));
+    // const itemsRequest = dispatch(fetchItems({ id: active, query: storedSearchValue }));
+    // return () => itemsRequest.abort();
+  }, [storedSearchValue, active, history, page, dispatch]);
 
-  // TODO загрузка/ошибка
+  // очистка категории и поиска при размонтировании
+  useEffect(() => {
+    return () => {
+      dispatch(changeCategory(0));
+      dispatch(changeSearchValue(''));
+    };
+  }, [dispatch]);
+
   const handleLoadMore = () => {
     dispatch(fetchMoreItems({ id: active, offset: items.length + 1, query: searchValue }));
   };
@@ -72,18 +89,33 @@ export default function Goods({ query, page }) {
         </form>
       )}
 
-      <div className="row">
-        {items.map((item) => (
-          <GoodsItem item={item} key={item.id} />
-        ))}
-      </div>
-      <div className="text-center">
-        {items.length >= 6 && lastFetchedItems.length >= 6 && (
-          <button className="btn btn-outline-primary" onClick={handleLoadMore}>
-            Загрузить ещё
-          </button>
-        )}
-      </div>
+      {statusFetch === 'loading' ? <Loading /> : null}
+      {statusFetch === 'failed' ? <Error /> : null}
+      {statusFetch === 'succeeded' && items.length === 0 ? <p className="error-message">Подходящих товаров нет</p> : null}
+      {statusFetch === 'succeeded' && items.length ? (
+        <>
+          <div className="row">
+            {items.map((item) => (
+              <GoodsItem item={item} key={item.id} />
+            ))}
+          </div>
+          <div className="text-center">
+            {items.length >= 6 && lastFetchedItems.length >= 6 && (
+              <button
+                className="btn btn-outline-primary btn-load-more"
+                onClick={handleLoadMore}
+                disabled={statusFetchMore === 'loading'}
+              >
+                {statusFetchMore === 'idle' || statusFetchMore === 'succeeded'
+                  ? 'Загрузить ещё'
+                  : null}
+                {statusFetchMore === 'loading' ? <Loading /> : null}
+                {statusFetchMore === 'failed' ? <Error /> : null}
+              </button>
+            )}
+          </div>
+        </>
+      ) : null}
     </section>
   );
 }

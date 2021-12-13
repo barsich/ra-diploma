@@ -1,13 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { sendOrder } from '../actions/actionCreators';
-// import { fetchItems, fetchMoreItems, fetchSelectedItem } from '../actions/actionCreators';
 
 const initialState = {
   items: [],
   status: 'idle',
 };
 
-// item: {
+// item props: {
 //   id,
 //   name,
 //   size,
@@ -15,7 +14,6 @@ const initialState = {
 //   price,
 // }
 
-// TODO add error, loading
 const cartItemList = createSlice({
   name: 'cartItemList',
   initialState,
@@ -48,9 +46,17 @@ const cartItemList = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(sendOrder.fulfilled, (state) => {
-      state.items = [];
-    });
+    builder
+      .addCase(sendOrder.fulfilled, (state) => {
+        state.items = [];
+        state.status = 'succeeded';
+      })
+      .addCase(sendOrder.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(sendOrder.rejected, (state) => {
+        state.status = 'failed';
+      });
   },
 });
 

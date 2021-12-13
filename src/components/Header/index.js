@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 import logo from '../../img/header-logo.png';
@@ -7,7 +7,6 @@ import { changeSearchValue } from '../../reducers/itemListSlice';
 import { checkActive } from '../../utils';
 
 export default function Header() {
-  // const { storedSearchValue } = useSelector((state) => state.itemListReducer);
   const { items } = useSelector((state) => state.cartItemListReducer);
   const [isSearchVisible, setVisible] = useState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -38,7 +37,6 @@ export default function Header() {
     history.push({
       pathname: '/ra-diploma/catalog.html',
       search: `?q=${searchValue}`,
-      state: { query: searchValue },
     });
     setVisible(false);
   };
