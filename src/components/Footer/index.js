@@ -9,17 +9,17 @@ export default function Footer() {
             <h5>Информация</h5>
             <ul className="nav flex-column">
               <li className="nav-item">
-                <NavLink className="nav-link" to="/ra-diploma/about.html">
+                <NavLink className="nav-link" to="/about.html">
                   О магазине
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link" to="/ra-diploma/catalog.html">
+                <NavLink className="nav-link" to="/catalog.html">
                   Каталог
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link" to="/ra-diploma/contacts.html">
+                <NavLink className="nav-link" to="/contacts.html">
                   Контакты
                 </NavLink>
               </li>

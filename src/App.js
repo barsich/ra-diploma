@@ -10,17 +10,17 @@ import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   return (
-    <Router>
+    <Router basename='/ra-diploma'>
       <Switch>
-        <Route path="/ra-diploma/catalog/:id.html" component={ItemPage} />
-        <Route path="/ra-diploma/catalog.html" component={CatalogPage} />
-        <Route path="/ra-diploma/about.html" component={AboutPage} />
-        <Route path="/ra-diploma/cart.html" component={CartPage} />
-        <Route path="/ra-diploma/contacts.html" component={ContactsPage} />
-        <Route path="/ra-diploma" exact component={HomePage} />
-        <Route path="/ra-diploma/404.html" component={NotFoundPage} />
+        <Route path="/catalog/:id.html" component={ItemPage} />
+        <Route path="/catalog.html" component={CatalogPage} />
+        <Route path="/about.html" component={AboutPage} />
+        <Route path="/cart.html" component={CartPage} />
+        <Route path="/contacts.html" component={ContactsPage} />
+        <Route path="/" exact component={HomePage} />
+        <Route path="/404.html" component={NotFoundPage} />
         <Route path="*">
-          <Redirect to="/ra-diploma/404.html" />
+          <Redirect to="/404.html" />
         </Route>
       </Switch>
     </Router>

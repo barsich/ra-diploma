@@ -11,7 +11,7 @@ export default function GoodsItem(props) {
         <div className="card-body">
           <p className="card-text">{title}</p>
           <p className="card-text">{price.toLocaleString()} руб.</p>
-          <Link to={`/ra-diploma/catalog/${id}.html`} className="btn btn-outline-primary">
+          <Link to={`/catalog/${id}.html`} className="btn btn-outline-primary">
             Заказать
           </Link>
         </div>

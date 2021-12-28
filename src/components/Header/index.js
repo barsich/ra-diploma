@@ -35,7 +35,7 @@ export default function Header() {
     dispatch(changeSearchValue(searchValue));
     dispatch(changeCategory(0));
     history.push({
-      pathname: '/ra-diploma/catalog.html',
+      pathname: '/catalog.html',
       search: `?q=${searchValue}`,
     });
     setVisible(false);
@@ -46,29 +46,29 @@ export default function Header() {
       <div className="row">
         <div className="col">
           <nav className="navbar navbar-expand-sm navbar-light bg-light">
-            <NavLink className="navbar-brand" to="/ra-diploma">
+            <NavLink className="navbar-brand" to="/">
               <img src={logo} alt="Bosa Noga" />
             </NavLink>
 
             <div className="collapase navbar-collapse" id="navbarMain">
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/ra-diploma" isActive={checkActive}>
+                  <NavLink className="nav-link" to="/" isActive={checkActive}>
                     Главная
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/ra-diploma/catalog.html">
+                  <NavLink className="nav-link" to="/catalog.html">
                     Каталог
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/ra-diploma/about.html">
+                  <NavLink className="nav-link" to="/about.html">
                     О магазине
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/ra-diploma/contacts.html">
+                  <NavLink className="nav-link" to="/contacts.html">
                     Контакты
                   </NavLink>
                 </li>
@@ -80,7 +80,7 @@ export default function Header() {
                     className="header-controls-pic header-controls-search"
                     onClick={handleSearchExpand}
                   ></div>
-                  <Link to="/ra-diploma/cart.html">
+                  <Link to="/cart.html">
                     <div className="header-controls-pic header-controls-cart">
                       {items.length !== 0 ? (
                         <div className="header-controls-cart-full">{items.length}</div>

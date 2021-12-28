@@ -60,7 +60,7 @@ export default function OpenedItem({ id }) {
       price: selectedItem.price,
     };
     dispatch(addToCart(itemToAdd));
-    history.push('/ra-diploma/cart.html');
+    history.push('/cart.html');
   };
 
   const handleSizeSelect = (size) => {

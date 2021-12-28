@@ -6,18 +6,10 @@ export function checkActive(match, location) {
   return match.url === location.pathname;
 }
 
-export function pickSearch(query) {
-  if (!query) {
-    return '';
-  }
-  const splittedQuery = query.split('&');
-  return decodeURI(splittedQuery[0].substring(3));
-}
+export function getQuery() {
+  const params = new URLSearchParams(window.location.search);
+  const decodedQuery = params.get('q') && decodeURI(params.get('q'));
+  const category = params.get('categoryId');
 
-export function pickCategory(query) {
-  if (!query || !query.includes('categoryId')) {
-    return '';
-  }
-  const splittedQuery = query.split('&');
-  return splittedQuery[1].substring(11);
+  return {decodedQuery, category}
 }

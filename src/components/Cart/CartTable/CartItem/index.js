@@ -4,7 +4,7 @@ export default function CartItem({ item, index, onDelete }) {
     <tr>
       <th scope="row">{index + 1}</th>
       <td>
-        <a href={`/ra-diploma/catalog/${id}.html`}>{name}</a>
+        <a href={`/catalog/${id}.html`}>{name}</a>
       </td>
       <td>{size}</td>
       <td>{count}</td>

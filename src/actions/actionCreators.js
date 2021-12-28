@@ -5,7 +5,7 @@ export const fetchItems = createAsyncThunk('itemList/fetchAllItems', async ({ id
   if (query) {
     url = url.concat(`&q=${query}`);
   }
-  console.log(url);
+  console.log(url)
   const response = await fetch(url);
   const data = await response.json();
   return data;
