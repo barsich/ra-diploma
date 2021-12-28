@@ -20,8 +20,17 @@ export default function Goods({ query, page }) {
   const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
+    if (storedSearchValue && page !== '/') {
+      let url = `${page}?q=${storedSearchValue}&categoryId=${active}`;
+      history.replace(url);
+    }
+    console.log(`id: ${active}, query: ${storedSearchValue}`);
+    dispatch(fetchItems({ id: active, query: storedSearchValue }));
+  }, [dispatch, history, page, storedSearchValue, active]);
+
+  useEffect(() => {
     const { decodedQuery, category } = getQuery();
-    if (decodedQuery && decodedQuery !== storedSearchValue) {
+    if (decodedQuery) {
       setSearchValue(decodedQuery);
       dispatch(changeSearchValue(decodedQuery));
     } else {
@@ -31,15 +40,6 @@ export default function Goods({ query, page }) {
       dispatch(changeCategory(category));
     }
   }, [dispatch, storedSearchValue, query]);
-
-  useEffect(() => {
-    if (storedSearchValue && page !== '/') {
-      let url = `${page}?q=${storedSearchValue}&categoryId=${active}`;
-      history.replace(url);
-    }
-    console.log(`id: ${active}, query: ${storedSearchValue}`);
-    dispatch(fetchItems({ id: active, query: storedSearchValue }));
-  }, [dispatch, history, page, storedSearchValue, active]);
 
   // очистка категории и поиска при размонтировании
   useEffect(() => {
