@@ -13,7 +13,7 @@ const categoriesList = createSlice({
     changeCategory: (state, action) => {
       const id = action.payload;
       if (id !== state.active) {
-        state.active = id;
+        state.active = +id;
       }
     },
   },
